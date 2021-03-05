@@ -12,7 +12,7 @@ class Field(private val size: Int) {
     fun printField() {
         field.forEach { row ->
             row.forEach {
-                println(it)
+                print("|$it|")
             }
             println()
         }
