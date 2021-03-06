@@ -1,9 +1,11 @@
+import kotlin.math.pow
+
 class Field(private val size: Int) {
 
 
     private val empty = "___"
     private var field = Array(size) { Array(size) { empty } }
-    private var isGameFinished = false
+    var isGameFinished = false
     private var moveCount = 0
 
     fun resetField() {
@@ -24,11 +26,23 @@ class Field(private val size: Int) {
         println()
     }
 
-    fun setFigure(x: Int, y: Int, figure: String) {
+    fun setFigure(x: Int, y: Int, figure: String): Boolean {
         if (!isGameFinished && isPositionValid(x, y) && field[x][y] == empty) {
             field[x][y] = figure
             moveCount++
             printField()
+            isGameFinished = isMoveWin(x, y, figure) || isDraw()
+            if (isGameFinished) {
+                println("WIN")
+            } else if (isDraw()) {
+                println("DRAW")
+            }
+            return true
+        }
+        else {
+            println("Your move is invalid, try again!")
+            printField()
+            return false
         }
     }
 
@@ -42,6 +56,8 @@ class Field(private val size: Int) {
             else -> false
         }
     }
+
+    fun isDraw() = (moveCount == (size * size))
 
     fun resetGame() {
         resetField()
